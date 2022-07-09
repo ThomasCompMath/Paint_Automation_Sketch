@@ -1,0 +1,217 @@
+# For playing around with some gui controls, pyautogui
+# FOR DEBUGGING -> pyautogui.position()
+
+import os                       # to use command prompt
+import pyautogui                # to use pyautogui
+import time                     # to cause a pause in the code execution
+#using pyautogui
+import mouse                    # another way to move the mouse
+import math                     # Needed for trig functions
+import random                   # Needed for random numbers
+
+def absMove(x,y,s):
+    mouse.move(x,y,True,s*.1)
+    time.sleep(s)
+    mouse.click('left')
+    time.sleep(s*.05)
+    mouse.click('left')
+    mouse.click('left')
+
+def relMove(x,y,s):
+    mouse.move(x,y,False,s*.1)
+    time.sleep(s)
+    mouse.click('left')
+    time.sleep(s*.001)
+    mouse.click('left')
+    
+def absDrag(x1,y1,x2,y2,s):
+    mouse.drag(x1,y1,x2,y2,True,s*.1)
+    time.sleep(s)
+    
+def relDrag(x2,y2,s):
+    mouse.drag(0,0,x2,y2,False,s*.1)
+    time.sleep(s)
+
+def drawPerson(posX,posY):      # Function to draw a person
+    absMove(posX,posY,.005)
+    relDrag(4,-12,.02)
+    relDrag(4,12,.02)
+    relDrag(-4,-12,.02)
+    relDrag(0,-12,.02)
+    relDrag(4,10,.02)
+    relDrag(-4,-10,.02)
+    relDrag(-6,-2,.01)
+    relDrag(-2,-5,.01)
+    relDrag(2,5,.01)
+    relDrag(6,2,.01)
+    relDrag(0,-2,.01)
+    u = -2
+    for i in range(4):
+        relDrag(u * 1.92,-math.sqrt(16-u*u) / 1.92,.005)
+        u += 1
+    v = 2
+    for i in range(4):
+        relDrag(u * 1.92,math.sqrt(16-u*u) / 1.92,.005)
+        u += -1
+
+def drawBird(posX,posY):        # Function to draw a bird
+    absMove(posX,posY,.005)
+    time.sleep(.1)
+    relDrag(20,10,.1)
+    time.sleep(.1)
+    relDrag(20,-10,.1)
+    time.sleep(.1)
+
+
+os.system('cls')
+
+#SETUP
+absMove(820,85,.1)              # Select color 1
+absMove(889,74,.01)             # Choose black
+absMove(861,74,.01)             # Select color 2
+absMove(889,74,.01)             # Choose black
+absMove(380,84,.01)             # Select paint bucket
+absMove(545,246,.01)            # Fill canvas
+absMove(806,83,.01)             # Select color 1
+absMove(1040,99,.01)            # Select sky blue
+absMove(352,85,.01)             # Select pencil
+
+#DRAW COORDINATE PLANE
+#absMove(403,412,.05)           # Move to center of coordinate plane
+#relDrag(150,0,.1)              # Draw axis
+#absMove(403,412,.05)           # Move to center of coordinate plane
+#relDrag(-150,0,.1)             # Draw axis
+#absMove(403,412,.05)           # Move to center of coordinate plane
+#relDrag(0,150,.1)              # Draw axis
+#absMove(403,412,.5)            # Move to center of coordinate plane
+#relDrag(0,-150,.1)             # Draw axis
+
+# Graph diagonal line
+#absMove(403,412,.1)        # Move to center of coordinate plane
+#for i in range(20):        # Draw the line
+#    relDrag(i,-i,.001)
+
+# Graph x^2
+#absMove(403,412,.5)        # Move to center of coordinate plane
+#j=1
+#for i in range(100):       # Draw the curve
+#    absMove(403 + j * (192/32), 412 - (j*j), .0001)
+#    j += 13/100
+    
+# Graph y = sin(x)
+absMove(203,412,.5)         # Move to left of center of coordinate plane
+j=1
+for i in range(30):         # Draw the curve
+    relDrag(j * (192/32), (math.sin(j) * 5), .0001)
+    j += 13/30
+    
+# Graph path
+absMove(403,412,.5)         # Move to center of coordinate plane
+for i in range(15):         # Draw the left line
+    relDrag(-i-2,j+3,.01)
+absMove(403,412,.5)         # Move to center of coordinate plane
+for i in range(15):         # Draw the right line
+    relDrag(i+1,j+3,.01)    
+
+# Sketch building
+absMove(422,488,.01)        # Move to start of building sketch
+relDrag(0,-120,.01)         # Sketch the left-most leg
+relDrag(40,0,.01)           # Sketch the back of roof
+for i in range(10):         # Sketch right side of roof
+    relDrag(1,2,.01)
+relDrag(-40,0,.01)          # Sketch front of roof
+for i in range(10):         # Sketch left side of roof
+    relDrag(-1,-2,.01)
+for i in range(10):         # Move back to left-front corner
+    relMove(1,2,.005)
+relDrag(0,120,.01)          # Draw middle leg
+for i in range(10):         # Position for left base
+    relMove(-1,-2,.005)
+for i in range(10):         # Draw left base
+    relDrag(1,2,.01)
+relDrag(40,0,.01)           # Draw front base
+relDrag(0,-120,.01)         # Draw right leg
+
+# Sketch the sun and color it in
+absMove(1001,68,.01)        # Grab yellow
+absMove(223,249,.005)       # Move to left side of sun
+j = -5
+for i in range(10):         # Draw left of sun
+    relDrag(j * (1.92),-math.sqrt(100-j*j) / 1.92,.01)
+    j += 1
+k = 5
+for i in range(10):         # Draw right of sun
+    relDrag(k * (1.92),math.sqrt(100-k*k) / 1.92,.01)
+    k += -1   
+absMove(384,79,.01)         # Grab paint bucket
+absMove(219,228,.1)         # Fill sun
+absMove(356,79,.01)         # Change back to pencil
+
+# Fill sky with random birds
+absMove(891,93,.01)         # Change color to white
+randomX = []
+randomY = []
+for i in range(0,12):       # Generate random lists of numbers
+    x = random.randint(296,817)
+    randomX.append(x)
+    y = random.randint(196,320)
+    randomY.append(y)
+for i in range(0,12):       # Draw birds
+    drawBird(randomX[i],randomY[i])
+
+# Place random people on the ground
+absMove(1088,92,.01)        # Change color to lavender
+randomX = []
+randomY = []
+for i in range(0,12):       # Generate random lists of numbers
+    x = random.randint(504,943)
+    randomX.append(x)
+    y = random.randint(454,613)
+    randomY.append(y)
+for i in range(0,12):       # Draw people
+    drawPerson(randomX[i],randomY[i])
+
+# Place random people on the ground
+absMove(1021,92,.01)        # Change color to light green
+randomX = []
+randomY = []
+for i in range(0,12):       # Generate random lists of numbers
+    x = random.randint(504,943)
+    randomX.append(x)
+    y = random.randint(454,613)
+    randomY.append(y)
+for i in range(0,12):       # Draw people
+    drawPerson(randomX[i],randomY[i])
+
+# Place random people on the ground
+absMove(977,92,.01)         # Change color to orange
+randomX = []
+randomY = []
+for i in range(0,12):       # Generate random lists of numbers
+    x = random.randint(504,943)
+    randomX.append(x)
+    y = random.randint(454,613)
+    randomY.append(y)
+for i in range(0,12):       # Draw people
+    drawPerson(randomX[i],randomY[i])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
